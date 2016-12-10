@@ -1,2 +1,9 @@
+/*
+  This is where all of the different stylesheets are imported.
+*/
 
 @import 'variables';
+
+body {
+  font-family: $main-font;
+}
