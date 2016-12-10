@@ -1,0 +1,22 @@
+{
+  "name": "Blog",
+  "version": "0.0.1",
+  "description": "The blog engine for davesmithhayes.com",
+  "private": true,
+  "author": {
+    "name": "Dave Smith-Hayes",
+    "email": "me@davesmithhayes.com",
+    "url": "http://davesmithhayes.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "gulp": "^3.9.0",
+    "gulp-clean-css": "^2.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-uglify": "^1.5.3"
+  }
+}

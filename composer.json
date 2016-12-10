@@ -1,0 +1,17 @@
+{
+    "name": "dsmithhayes/blog",
+    "description": "A simple blog platform.",
+    "require": {
+        "slim/slim": "^3.6",
+        "slim/flash": "^0.2.0",
+        "ext-session": "^7.0",
+        "slim/twig-view": "^2.1"
+    },
+    "license": "BSD 3.0",
+    "authors": [
+        {
+            "name": "Dave Smith-Hayes",
+            "email": "me@davesmithhayes.com"
+        }
+    ]
+}

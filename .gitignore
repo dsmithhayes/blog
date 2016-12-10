@@ -1,0 +1,9 @@
+composer.lock
+public/assets
+vendor/
+node_modules/
+.vagrant/
+*.log
+public/css
+public/js
+public/images
