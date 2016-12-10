@@ -2,8 +2,39 @@
   This is where all of the different stylesheets are imported.
 */
 
+// Google Fonts
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i|Poppins:600');
+
+// File Includes
 @import 'variables';
+@import 'structure';
+@import 'header';
+@import 'content';
+@import 'footer';
 
 body {
-  font-family: $main-font;
+  margin: 0;
+  padding: 0;
+
+  color: $base01;
+  background-color: $base3;
+
+  font-family: 'Noto Serif', serif;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  p {
+    font-size: $reading-size;
+    line-height: $reading-lineheight;
+  }
+
+  a {
+    color: $blue;
+
+    &:hover {
+      color: $orange;
+    }
+  }
 }
