@@ -14,6 +14,18 @@ $app->get('/[home]', function (Request $req, Response $res) {
     ]);
 });
 
+$app->get('/blog', function (Request $req, Response $res) {
+
+});
+
+$app->get('/blog/{slug}', function (Request $req, Response $res) {
+    $slug = $req->getAttribute('slug');
+});
+
+$app->get('/contact', function (Request $req, Response $res) {
+
+});
+
 /**
  * Send the response to the client.
  */

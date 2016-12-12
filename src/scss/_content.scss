@@ -16,4 +16,12 @@
     background-color: $base03;
     border-radius: 5px;
   }
+
+  blockquote {
+    padding-left: 1em;
+    border-left: 3px solid $base1;
+    font-size: 22px;
+    width: 80%;
+    margin: 0 auto;
+  }
 }

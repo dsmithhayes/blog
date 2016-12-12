@@ -5,7 +5,8 @@
         "slim/slim": "^3.6",
         "slim/flash": "^0.2.0",
         "ext-session": "^7.0",
-        "slim/twig-view": "^2.1"
+        "slim/twig-view": "^2.1",
+        "dsmithhayes/extended": "^0.5.0"
     },
     "license": "BSD 3.0",
     "authors": [
