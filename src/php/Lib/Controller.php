@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 class Controller
 {
     protected $view;
-    
+
     public function __construct($view)
     {
         $this->view = $view;
@@ -16,6 +16,6 @@ class Controller
 
     public function render()
     {
-        return $this->
+        return $this->view->render();
     }
 }
