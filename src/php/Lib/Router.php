@@ -74,7 +74,6 @@ class Router
     {
         return empty($this->routes);
     }
-    
 
     /**
      * @return array
@@ -83,5 +82,28 @@ class Router
     public function yeildRoutes(): array
     {
         yield $this->routes;
+    }
+
+    /**
+     * Builds all of the routes for the application.
+     * 
+     * @param \Slim\App &$app
+     *      Reference to the Slim application
+     */
+    public function hydrate(&$app)
+    {
+        foreach ($this->yeildRoutes() as $route) {
+            if (is_array($route->getMethod()) {
+                $app->match($route->getMethod(),
+                            $route->getRoute(),
+                            $route->getCallback())->setName($route->getName());
+
+                continue;
+            }
+
+            $method = $route->getMethod();
+            $app->{$method}($route->getRoute(),
+                            $route->getCallback())->setName($route->getName());
+        }
     }
 }

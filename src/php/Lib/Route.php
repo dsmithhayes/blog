@@ -99,7 +99,7 @@ abstract class Route
      * @return callable
      *      The un-called callback function
      */
-    public function getCallback()
+    public function getCallback(): callable
     {
         return $this->callback;
     }
@@ -112,7 +112,7 @@ abstract class Route
      * @return \Psr\Http\Message\ResponseInterface
      *      The response from the callback
      */
-    public function call(Request $req, Response $res)
+    public function call(Request $req, Response $res): Response
     {
         return $this->callback($req, $res);
     }
