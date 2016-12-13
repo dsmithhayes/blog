@@ -3,7 +3,7 @@
 namespace Blog\Lib;
 
 use Blog\Lib\Route;
-use Blog\Lib\Exception\RouterException
+use Blog\Lib\Exception\RouterException;
 
 /**
  * This class will add all of the routes defined for the application.
@@ -57,7 +57,7 @@ class Router
      */
     public function routeExists(string $route): bool
     {
-        foreach ($this->yieldRoutes() as $route) {
+        foreach ($this->getRoutes() as $route) {
             if ($route->getRoute() === $route) {
                 return true;
             }
@@ -79,9 +79,9 @@ class Router
      * @return array
      *      Yields all of the registered routes
      */
-    public function yeildRoutes(): array
+    public function getRoutes(): array
     {
-        yield $this->routes;
+        return $this->routes;
     }
 
     /**
@@ -92,12 +92,13 @@ class Router
      */
     public function hydrate(&$app)
     {
-        foreach ($this->yeildRoutes() as $route) {
-            if (is_array($route->getMethod()) {
+        foreach ($this->getRoutes() as $route) {
+            if (is_array($route->getMethod())) {
                 $app->match($route->getMethod(),
                             $route->getRoute(),
-                            $route->getCallback())->setName($route->getName());
+                            $route->getCallback());
 
+                $app->setName($route->getName());
                 continue;
             }
 

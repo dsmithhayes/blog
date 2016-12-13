@@ -53,6 +53,13 @@ $container['view'] = function ($container) {
 };
 
 /**
+ * Prepare the routes.
+ */
+$router = require_once $container->config['routes']['path'];
+$router->hydrate($app);
+
+
+/**
  * Send the application to the response.
  */
 return $app;
