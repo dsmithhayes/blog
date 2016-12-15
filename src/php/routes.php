@@ -42,5 +42,18 @@ return new Router([
                      return $res;
                  });
         }
+    },
+
+    new class extends Route {
+        public function __construct()
+        {
+            $this->setName('test')
+                 ->setMethod(['get', 'post'])
+                 ->setRoute('/test')
+                 ->setCallback(function (Request $req, Response $res) {
+                     $res->getBody()->write('It works!');
+                     return $res;
+                 });
+        }
     }
 ]);

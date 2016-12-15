@@ -86,7 +86,7 @@ class Router
 
     /**
      * Builds all of the routes for the application.
-     * 
+     *
      * @param \Slim\App &$app
      *      Reference to the Slim application
      */
@@ -94,11 +94,10 @@ class Router
     {
         foreach ($this->getRoutes() as $route) {
             if (is_array($route->getMethod())) {
-                $app->match($route->getMethod(),
-                            $route->getRoute(),
-                            $route->getCallback());
-
-                $app->setName($route->getName());
+                $app->map($route->getMethod(),
+                          $route->getRoute(),
+                          $route->getCallback())
+                    ->setName($route->getName());
                 continue;
             }
 

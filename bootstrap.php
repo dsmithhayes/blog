@@ -8,39 +8,27 @@ use Slim\Views\TwigExtension;
 /**
  * Initialize the application, break out the container.
  */
-$app = new Slim\App();
+
+$settings = [];
+
+foreach (scandir(__DIR__ . '/config') as $conf) {
+    if ($conf === '.' || $conf === '..') {
+        continue;
+    }
+
+    $key = preg_replace('/\.php/', '', $conf);
+    $settings['settings'][$key] = require __DIR__ . '/config/' . $conf;
+}
+
+$app = new Slim\App($settings);
 $container = $app->getContainer();
-
-/**
- * Read all of the configuration.
- */
-$container['config'] = function ($container) {
-    $tmp = [];
-
-    foreach (scandir(__DIR__ . '/config') as $conf) {
-        if ($conf === '.' || $conf === '..') {
-            continue;
-        }
-
-        $key = preg_replace('/\.php/', '', $conf);
-        $tmp[$key] = require __DIR__ . '/config/' . $conf;
-    }
-
-    if (empty($tmp)) {
-        $tmp = ['error' => 'No configuration files loaded.'];
-    } else {
-        $tmp['error'] = null;
-    }
-
-    return $tmp;
-};
 
 /**
  * Initialize the Templates
  */
 $container['view'] = function ($container) {
-    $path = $container->config['views']['path'];
-    $cache = $container->config['views']['cache'];
+    $path = $container->settings['views']['path'];
+    $cache = $container->settings['views']['cache'];
 
     $view = new Twig($path);
 
@@ -55,7 +43,7 @@ $container['view'] = function ($container) {
 /**
  * Prepare the routes.
  */
-$router = require_once $container->config['routes']['path'];
+$router = require_once $container->settings['routes']['path'];
 $router->hydrate($app);
 
 
