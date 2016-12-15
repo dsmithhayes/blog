@@ -21,8 +21,9 @@ return new Router([
                  ->setMethod('get')
                  ->setRoute('/[home]')
                  ->setCallback(function (Request $req, Response $res) {
-
-                    return $res;
+                    return $this->view->render($res, 'home.twig', [
+                        'title' => 'Home'
+                    ]);
                  });
         }
     },

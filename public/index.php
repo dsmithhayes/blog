@@ -1,11 +1,18 @@
 <?php
 
-$app = require_once __DIR__ . '/../bootstrap.php';
-
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+/**
+ * The entry point. Good luck!
+ *
+ * @author Dave Smith-Hayes <me@davesmithhayes.com>
+ */
 
 /**
- * Send the response to the client.
+ * Parse the request.
+ */
+$app = require_once __DIR__ . '/../bootstrap.php';
+
+
+/**
+ * Send the response.
  */
 $app->run();

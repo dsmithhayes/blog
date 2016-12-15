@@ -2,6 +2,12 @@
 
 namespace Blog\Lib;
 
+/**
+ * Ideally you will right the callback function to mimic exactly what you
+ * would normally pass into the `Slim\App`. When the callback is passed into the
+ * `Slim\App` it assumes to be a method of that object. The use of `$this` will
+ * work as you would expect it within the callback functions.
+ */
 abstract class Route
 {
     /**
@@ -97,7 +103,7 @@ abstract class Route
 
     /**
      * @return callable
-     *      The un-called callback function
+     *      The un-called callback function.
      */
     public function getCallback(): callable
     {
