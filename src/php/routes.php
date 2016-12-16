@@ -9,14 +9,20 @@ use Blog\Lib\Router;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
+if ($app) {
+    $container = $app->getContainer();
+}
+
 return new Router([
 
     /**
      * The Home route.
      */
-    new class extends Route {
-        public function __construct()
+    new class($container) extends Route {
+        public function __construct($container)
         {
+            $this->setContainer($container);
+
             $this->setName('home')
                  ->setMethod('get')
                  ->setRoute('/[home]')

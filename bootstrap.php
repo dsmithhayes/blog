@@ -41,6 +41,13 @@ $container['view'] = function ($container) {
 };
 
 /**
+ * Add the Markdown parser.
+ */
+$container['markdown'] = function ($container) {
+    return new Parsedown();
+};
+
+/**
  * Prepare the routes.
  */
 $router = require_once $container->settings['routes']['path'];

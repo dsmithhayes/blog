@@ -2,6 +2,8 @@
 
 namespace Blog\Lib;
 
+use Interop\Container\ContainerInterface as Container;
+
 /**
  * Ideally you will right the callback function to mimic exactly what you
  * would normally pass into the `Slim\App`. When the callback is passed into the
@@ -33,6 +35,12 @@ abstract class Route
      *      The callback method for when the route is matched
      */
     protected $callback;
+
+    /**
+     * @var \Interop\Container\ContainerInterface
+     *      An instance of the application container
+     */
+    protected $container;
 
     /**
      * @param string $name
@@ -74,6 +82,12 @@ abstract class Route
         return $this;
     }
 
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+        return $this;
+    }
+
     /**
      * @return string
      *      The name of the route
@@ -108,6 +122,15 @@ abstract class Route
     public function getCallback(): callable
     {
         return $this->callback;
+    }
+
+    /**
+     * @return \Interop\Container\ContainerInteface
+     *      The instance of the application container
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 
     /**
