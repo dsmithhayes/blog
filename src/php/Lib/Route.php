@@ -73,10 +73,11 @@ abstract class Route
     }
 
     /**
-     * @param callable $callback
-     *      The callback method for when the route is matched
+     * @param callable|string $callback
+     *      A callback method for the response, or the name of a class and
+     *      method to pass into the application
      */
-    public function setCallback(callable $callback)
+    public function setCallback($callback)
     {
         $this->callback = $callback;
         return $this;
@@ -119,7 +120,7 @@ abstract class Route
      * @return callable
      *      The un-called callback function.
      */
-    public function getCallback(): callable
+    public function getCallback()
     {
         return $this->callback;
     }
@@ -131,18 +132,5 @@ abstract class Route
     public function getContainer(): Container
     {
         return $this->container;
-    }
-
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface $req
-     *      Instance of the appklication's HTTP Request
-     * @param \Psr\Http\Message\ResponseInterface $res
-     *      Instance of the application's HTTP Response
-     * @return \Psr\Http\Message\ResponseInterface
-     *      The response from the callback
-     */
-    public function call(Request $req, Response $res): Response
-    {
-        return $this->callback($req, $res);
     }
 }

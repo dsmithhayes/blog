@@ -9,9 +9,7 @@ use Blog\Lib\Router;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-if ($app) {
-    $container = $app->getContainer();
-}
+$container = $app->getContainer();
 
 return new Router([
 
@@ -19,18 +17,32 @@ return new Router([
      * The Home route.
      */
     new class($container) extends Route {
+        /**
+         * @var string
+         *      The name of the template file for this route's response
+         */
+        private $templateFile = 'home.twig';
+
         public function __construct($container)
         {
             $this->setContainer($container);
 
+            // Do something with the container to prepare for the callback
+
             $this->setName('home')
                  ->setMethod('get')
                  ->setRoute('/[home]')
-                 ->setCallback(function (Request $req, Response $res) {
-                    return $this->view->render($res, 'home.twig', [
-                        'title' => 'Home'
-                    ]);
-                 });
+                 ->setCallback(self::class . ':about');
+        }
+
+        /**
+         * Gets the about markdown file and renders it to the view.
+         */
+        public function about(Request $req, Response $res)
+        {
+            return $this->container->view->render($res, $this->templateFile, [
+                'title' => 'Home'
+            ]);
         }
     },
 
