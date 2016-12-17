@@ -2,10 +2,13 @@
 
 namespace Blog\Lib;
 
+use Blog\Lib\Post;
+
 class Blog
 {
-    public function getPost(Request $req, Response $res)
-    {
-
-    }
+    /**
+     * @var \Blog\Lib\Post[]
+     *      The list of blog posts
+     */
+    private $postList;
 }
