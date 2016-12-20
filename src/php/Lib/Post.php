@@ -2,6 +2,8 @@
 
 namespace Blog\Lib;
 
+use DateTime;
+
 class Post
 {
     /**
@@ -9,6 +11,12 @@ class Post
      *      The title of the post
      */
     private $title;
+
+    /**
+     * @var string
+     *      The slug of the post for the URI
+     */
+    private $slug;
 
     /**
      * @var string
@@ -50,6 +58,26 @@ class Post
 
     /**
      * @return string
+     *      The slug for the post
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     *      The slug for the post
+     * @return \Blog\Lib\Post
+     */
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * @return string
      *      The body of the post
      */
     public function getBody(): string
@@ -65,6 +93,57 @@ class Post
     public function setBody(string $body)
     {
         $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     *      Returns whether or not the post is published
+     */
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    /**
+     * Sets the published flag for the post.
+     *
+     * @return \Blog\Lib\Post
+     */
+    public function publish()
+    {
+        $this->published = true;
+        $this->datePublished = new DateTime();
+        return $this;
+    }
+
+    /**
+     * Unsets the published flag for the post.
+     *
+     * @return \Blog\Lib\Post
+     */
+    public function unpublish()
+    {
+        $this->published = false;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     *      The DateTime object for when the post was published
+     */
+    public function getDatePosted(): DateTime
+    {
+        return $this->datePublished;
+    }
+
+    /**
+     * @param |DateTime $date
+     *      A DateTime object representing when the post was published
+     */
+    public function setDatePublished(DateTime $date)
+    {
+        $this->datePublished = $date;
         return $this;
     }
 }
