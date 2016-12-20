@@ -25,12 +25,6 @@ class Contact
     private $message;
 
     /**
-     * @var string
-     *      The email address to send mail to
-     */
-    private $to;
-
-    /**
      * @param string $name
      * @param string $email
      * @param string $subject
@@ -48,7 +42,7 @@ class Contact
     }
 
     /**
-     * @param string $fromName
+     * @param string $name
      *      The name of the sender
      */
     public function setName(string $name)
@@ -85,15 +79,38 @@ class Contact
         return $this->emai;
     }
 
+    /**
+     * @param string $subject
+     */
     public function setSubject(string $subject)
     {
         $this->subject = $subject;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getSubject(): string
     {
         return $this->subject;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage(string $message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 
     /**
