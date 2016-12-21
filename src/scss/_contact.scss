@@ -1,0 +1,22 @@
+/*
+  Contact form styles
+*/
+
+#contact-form {
+  input {
+    padding: 0.5em;
+    font-size: $reading-size;
+    background-color: $base2;
+    color: $base02;
+    border: 1px solid $base01;
+    width: 95%;
+  }
+
+  textarea {
+    padding: 0.5em;
+    font-size: $reading-size;
+    background-color: $base2;
+    color: $base02;
+    border: 1px solid $base01;
+  }
+}
