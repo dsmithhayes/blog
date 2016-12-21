@@ -20,6 +20,9 @@ foreach (scandir(__DIR__ . '/config') as $conf) {
     $settings['settings'][$key] = require __DIR__ . '/config/' . $conf;
 }
 
+// Debugging
+$settings['settings']['displayErrorDetails'] = true;
+
 $app = new Slim\App($settings);
 $container = $app->getContainer();
 

@@ -27,8 +27,6 @@ return new Router([
         {
             $this->setContainer($container);
 
-            // Do something with the container to prepare for the callback
-
             $this->setName('home')
                  ->setMethod('get')
                  ->setRoute('/[home]')
@@ -65,45 +63,43 @@ return new Router([
     /**
      * Defines the contact form route
      */
-    new class extends Route {
-        public function __construct()
+    new class($container) extends Route {
+        private $templateFile = 'contact.twig';
+
+        public function __construct($container)
         {
+            $this->setContainer($container);
             $this->setName('contact')
                  ->setMethod('get')
                  ->setRoute('/contact')
-                 ->setCallback(function (Request $req, Response $res) {
+                 ->setCallback(self::class . ':contact');
+        }
 
-                     return $res;
-                 });
+        public function contact(Request $req, Response $res)
+        {
+            return $this->container->view->render($res, $this->templateFile, [
+                'title' => 'Contact'
+            ]);
         }
     },
 
     /**
      * Handles the submittion of the contact form
      */
-    new class extends Route {
-        public function __construct()
+    new class($container) extends Route {
+        public function __construct($container)
         {
+            $this->setContainer($container);
             $this->setName('contact-submit')
                  ->setMethod('post')
                  ->setRoute('/contact')
-                 ->setCallback(function (Request $req, Response $res) {
-
-                     return $res;
-                 });
+                 ->setCallback(self::class . ':handleForm');
         }
-    }
 
-    new class extends Route {
-        public function __construct()
+        public function handleForm(Request $req, Response $res): Response
         {
-            $this->setName('test')
-                 ->setMethod(['get', 'post'])
-                 ->setRoute('/test')
-                 ->setCallback(function (Request $req, Response $res) {
-                     $res->getBody()->write('It works!');
-                     return $res;
-                 });
+
+            return $res;
         }
     }
 ]);
