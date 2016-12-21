@@ -2,6 +2,8 @@
 
 namespace Blog\Lib;
 
+use Blog\Lib\Email\Headers;
+
 class Contact
 {
     /**
@@ -25,6 +27,12 @@ class Contact
     private $message;
 
     /**
+     * @var \Blog\Lib\Email\Headers
+     *      Collection of headers for the email that is being sent
+     */
+    private $headers;
+
+    /**
      * @param string $name
      * @param string $email
      * @param string $subject
@@ -35,10 +43,15 @@ class Contact
                                 string $subject,
                                 string $message
     ) {
+        $this->headers = new Headers();
+
         $this->setName($name)
              ->setEmail($email)
              ->setSubject($subject)
              ->setMessage($message);
+
+        $fromString = $this->getName() . '<' . $this->getEmail() . '>';
+        $this->headers->addHeader('From', $fromString);
     }
 
     /**

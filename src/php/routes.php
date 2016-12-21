@@ -62,6 +62,38 @@ return new Router([
         }
     },
 
+    /**
+     * Defines the contact form route
+     */
+    new class extends Route {
+        public function __construct()
+        {
+            $this->setName('contact')
+                 ->setMethod('get')
+                 ->setRoute('/contact')
+                 ->setCallback(function (Request $req, Response $res) {
+
+                     return $res;
+                 });
+        }
+    },
+
+    /**
+     * Handles the submittion of the contact form
+     */
+    new class extends Route {
+        public function __construct()
+        {
+            $this->setName('contact-submit')
+                 ->setMethod('post')
+                 ->setRoute('/contact')
+                 ->setCallback(function (Request $req, Response $res) {
+
+                     return $res;
+                 });
+        }
+    }
+
     new class extends Route {
         public function __construct()
         {
