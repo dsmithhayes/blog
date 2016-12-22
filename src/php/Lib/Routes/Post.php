@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Lib;
+namespace Blog\Lib\Routes;
 
 use DateTime;
 

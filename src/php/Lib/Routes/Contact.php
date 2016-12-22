@@ -1,7 +1,11 @@
 <?php
 
-namespace Blog\Lib;
+namespace Blog\Lib\Routes;
 
+use Interop\Container\ContainerInterface as Container;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Blog\Lib\Route;
 use Blog\Lib\Email\Headers;
 
 class Contact
@@ -38,20 +42,9 @@ class Contact
      * @param string $subject
      * @param string $message
      */
-    public function __construct(string $name,
-                                string $email,
-                                string $subject,
-                                string $message
-    ) {
+    public function __construct()
+    {
         $this->headers = new Headers();
-
-        $this->setName($name)
-             ->setEmail($email)
-             ->setSubject($subject)
-             ->setMessage($message);
-
-        $fromString = $this->getName() . '<' . $this->getEmail() . '>';
-        $this->headers->addHeader('From', $fromString);
     }
 
     /**
@@ -133,5 +126,50 @@ class Contact
     {
 
         return false;
+    }
+
+    /**
+     * The route callback for loading the form
+     *
+     * @return Blog\Lib\Route
+     */
+    public function index(Container $container): Route
+    {
+        return new class($container) extends Route {
+            public function __construct($container)
+            {
+                $this->setContainer($container);
+
+                $this->setName('load-contact')
+                     ->setMethod('get')
+                     ->setRoute('/contact')
+                     ->setCallback(function (Request $req, Response $res) {
+                         return $this->view->render($res, 'contact.twig', [
+                             'title' => 'Contact'
+                         ]);
+                     });
+            }
+        };
+    }
+
+    public function handleForm(Container $container): Route
+    {
+        return new class($container) extends Route {
+            public function __construct($container)
+            {
+                $this->setContainer($container);
+
+                $this->setName('handle-contact')
+                     ->setMethod('post')
+                     ->setRoute('/contact')
+                     ->setCallback(function (Request $req, Response $res) {
+                         // handle the form here
+
+                         return $this->view->render($res, 'contact.twig', [
+                             'title' => 'Contact'
+                         ]);
+                     });
+            }
+        };
     }
 }

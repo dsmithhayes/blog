@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Lib;
+namespace Blog\Lib\Routes;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -12,23 +12,27 @@ class Home
 {
     private $container;
 
-    public function __construct(Container $container)
+    public function index($container): Route
     {
-        $this->container = $container;
-    }
-
-    public function about(): Route
-    {
-        return new class extends Route {
-            public function __construct()
+        return new class($container) extends Route {
+            public function __construct($container)
             {
+                $this->setContainer($container);
+
                 $this->setName('about')
                      ->setMethod('get')
                      ->setRoute('/[home]')
                      ->setCallback(function (Request $req, Response $res) {
-
+                         return $this->view->render($res, 'home.twig', [
+                             'title' => 'Home'
+                         ]);
                      });
             }
-        }
+        };
+    }
+
+    public function __invoke($container)
+    {
+        return $this->index($container);
     }
 }

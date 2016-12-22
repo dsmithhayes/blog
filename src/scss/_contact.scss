@@ -3,13 +3,39 @@
 */
 
 #contact-form {
+  width: 100%;
+
+  label {
+    font-size: $reading-size;
+    display: none;
+  }
+
   input {
     padding: 0.5em;
     font-size: $reading-size;
     background-color: $base2;
     color: $base02;
     border: 1px solid $base01;
-    width: 95%;
+    border-radius: 3px;
+    width: 50%;
+    margin: 0.5em auto;
+
+    @media screen and (max-width: 800px) {
+      width: 95%;
+    }
+  }
+
+  button {
+    padding: 0.5em;
+    font-size: $reading-size;
+    background-color: $base2;
+    margin: 0.5em auto;
+    border: 1px solid $base01;
+    border-radius: 3px;
+
+    @media screen and (min-width: 800px) {
+      width: 12.5%
+    }
   }
 
   textarea {
@@ -18,5 +44,14 @@
     background-color: $base2;
     color: $base02;
     border: 1px solid $base01;
+    border-radius: 3px;
+    width: 50%;
+    height: 10em;
+
+    margin: 0.5em auto;
+
+    @media screen and (max-width: 800px) {
+      width: 95%;
+    }
   }
 }

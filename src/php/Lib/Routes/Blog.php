@@ -1,8 +1,8 @@
 <?php
 
-namespace Blog\Lib;
+namespace Blog\Lib\Routes;
 
-use Blog\Lib\Post;
+use Blog\Lib\Routes\Post;
 
 class Blog
 {
