@@ -10,13 +10,11 @@ use Blog\Lib\Route;
 
 class Home
 {
-    public function index($container): Route
+    public function index(): Route
     {
-        return new class($container) extends Route {
-            public function __construct($container)
+        return new class() extends Route {
+            public function __construct()
             {
-                $this->setContainer($container);
-
                 $this->setName('about')
                      ->setMethod('get')
                      ->setRoute('/[home]')

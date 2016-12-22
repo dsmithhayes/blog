@@ -16,13 +16,11 @@ class Contact
      * @param Interop\Container\ContainerInteface $container
      * @return Blog\Lib\Route
      */
-    public function index(Container $container): Route
+    public function index(): Route
     {
-        return new class($container) extends Route {
-            public function __construct($container)
+        return new class() extends Route {
+            public function __construct()
             {
-                $this->setContainer($container);
-
                 $this->setName('load-contact')
                      ->setMethod('get')
                      ->setRoute('/contact')
@@ -35,13 +33,11 @@ class Contact
         };
     }
 
-    public function handleForm(Container $container): Route
+    public function handleForm(): Route
     {
-        return new class($container) extends Route {
-            public function __construct($container)
+        return new class() extends Route {
+            public function __construct()
             {
-                $this->setContainer($container);
-
                 $this->setName('handle-contact')
                      ->setMethod('post')
                      ->setRoute('/contact')

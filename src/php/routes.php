@@ -14,25 +14,12 @@ $container = $app->getContainer();
 
 return new Router([
     // Home page
-    (new Home())->index($container),
+    (new Home())->index(),
 
     // Contact page
-    (new Contact())->index($container),
-    (new Contact())->handleForm($container),
+    (new Contact())->index(),
+    (new Contact())->handleForm(),
 
-    /**
-     * The Blog home route.
-     */
-    new class extends Route {
-        public function __construct()
-        {
-            $this->setName('blog-home')
-                 ->setMethod('get')
-                 ->setRoute('/blog')
-                 ->setCallback(function (Request $req, Response $res) {
-
-                     return $res;
-                 });
-        }
-    },
+    // Blog posts
+    (new Blog())->index(),
 ]);

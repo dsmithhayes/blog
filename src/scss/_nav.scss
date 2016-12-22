@@ -4,12 +4,12 @@
 
 nav {
     position: fixed;
-    bottom: 0;
+    top: 0;
     right: 0;
     box-sizing: border-box;
     width: 100%;
     background-color: $base2;
-    border-top: 1px solid $base1;
+    border-bottom: 1px solid $base1;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
 

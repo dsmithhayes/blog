@@ -7,7 +7,8 @@
         "ext-session": "^7.0",
         "slim/twig-view": "^2.1",
         "dsmithhayes/extended": "^0.5.0",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "cakephp/orm": "^3.3"
     },
     "license": "BSD 3.0",
     "authors": [
