@@ -2,13 +2,18 @@
 
 namespace Blog\Lib\Routes;
 
+use Blog\Lib\Route;
 use Blog\Lib\Routes\Post;
 
 class Blog
 {
-    /**
-     * @var \Blog\Lib\Post[]
-     *      The list of blog posts
-     */
-    private $postList;
+    public function index(Container $container): Route
+    {
+        return class($container) extends Route {
+            public function __construct($container)
+            {
+                $this->setContainer($container);
+            }
+        };
+    }
 }

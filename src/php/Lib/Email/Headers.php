@@ -35,6 +35,10 @@ class Headers
      */
     public function __toString(): string
     {
+        if (!$this->headers) {
+            return '';
+        }
+
         foreach ($this->headers as $key => $value) {
             $strings[] = "{$key}: {$value}";
         }

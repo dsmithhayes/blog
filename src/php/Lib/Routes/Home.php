@@ -10,8 +10,6 @@ use Blog\Lib\Route;
 
 class Home
 {
-    private $container;
-
     public function index($container): Route
     {
         return new class($container) extends Route {
@@ -29,10 +27,5 @@ class Home
                      });
             }
         };
-    }
-
-    public function __invoke($container)
-    {
-        return $this->index($container);
     }
 }
