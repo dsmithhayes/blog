@@ -77,6 +77,26 @@ class Post
     }
 
     /**
+     * @param string $title
+     *      The title of the post
+     * @param int $length
+     *      How long the slug should be
+     * @return string
+     *      The slug version of the title
+     */
+    public function createSlug(string $title, int $length = 0): string
+    {
+        $title = preg_replace('/\s/', '_', $title);
+        $title = preg_replace('/\W/', '', $title);
+
+        if ($length) {
+            $title = substr($title, 0, $length);
+        }
+
+        return strtolower($title);
+    }
+
+    /**
      * @return string
      *      The body of the post
      */

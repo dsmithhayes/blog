@@ -4,6 +4,8 @@ require_once 'vendor/autoload.php';
 
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 
 /**
  * Initialize the application, break out the container.
@@ -48,6 +50,10 @@ $container['view'] = function ($container) {
  */
 $container['markdown'] = function ($container) {
     return new Parsedown();
+};
+
+$container['pdo'] = function ($container) {
+    return new PDO($container->settings['database']['dsn']);
 };
 
 /**

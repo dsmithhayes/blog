@@ -33,6 +33,9 @@ class Contact
         };
     }
 
+    /**
+     * Handles the mailing execution.
+     */
     public function handleForm(): Route
     {
         return new class() extends Route {
