@@ -80,6 +80,26 @@ class Schema
     }
 
     /**
+     * @param string $tableName
+     *      The name of the table to get the columns from
+     * @return array
+     *      An array of string, each column name
+     */
+    public function getColumnNames(string $tableName): array
+    {
+        $temp = [];
+
+        $statement = $this->pdo->prepare(self::SCHEMA_QUERY_TABLE_PRAGMA)
+                               ->execute(['name' => $tableName]);
+
+        foreach ($statement->fetchAll() as $row) {
+            $temp[] = $row['name'];
+        }
+
+        return $temp;
+    }
+
+    /**
      * Builds all of the tables. The table schema is a basic array which
      *
      * @return string
