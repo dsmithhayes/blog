@@ -68,7 +68,7 @@ class Model
      */
     public function __get($key)
     {
-        return $this->columns[$key];
+        return $this->get((string) $key);
     }
 
     /**
@@ -81,12 +81,7 @@ class Model
      */
     public function __set($key, $value)
     {
-        if (!in_array($key, $this->columns)) {
-            throw new DatabaseException('Unknown colum name: ' . $key);
-        }
-
-        $this->columns[$key] = $value;
-        $this->dirty = true;
+        $this->set((string) $key, $value);
     }
 
     /**
@@ -119,14 +114,12 @@ class Model
      */
     public function findBy(string $columnName, $value)
     {
-        $sql = "SELECT * FROM {$this->tableName} WHERE {$columnName} = :value";
-        $row = $this->pdo->prepare($sql)
-                         ->execute(['value' => $value])
-                         ->fetch();
+        $sql = "SELECT *
+                FROM {$this->tableName}
+                WHERE {$columnName} = {$value}";
 
-        if (!$row) {
-            throw new DatabaseException("PDO error: " . PDO::errorInfo());
-        }
+        $row = $this->pdo->query($sql)
+                         ->fetch();
 
         foreach ($row as $name => $value) {
             $this->columns[$name] = $value;
@@ -142,7 +135,9 @@ class Model
      */
     public function findAll(): array
     {
-        $sql  = "SELECT * FROM {$this->tableName}";
+        $sql  = "SELECT *
+                 FROM {$this->tableName}";
+        
         $rows = $this->pdo->query($sql)
                           ->fetchAll(PDO::FETCH_ASSOC);
 
@@ -154,5 +149,42 @@ class Model
         }
 
         return $models;
+    }
+
+    /**
+     * Persists the data into the database
+     */
+    public function save()
+    {
+
+    }
+
+    /**
+     * @param string $key
+     *      The name of the column
+     * @param mixed $value
+     *      The value to set
+     */
+    public function set(string $key, $value)
+    {
+        if (!in_array($key, $this->columns)) {
+            throw new DatabaseException('Unknown colum name: ' . $key);
+        }
+
+        $this->columns[$key] = $value;
+        $this->dirty = true;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     *      The name of the column
+     * @return mixed
+     *      The data in the column
+     */
+    public function get($key)
+    {
+        return $this->columns[$key];
     }
 }

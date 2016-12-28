@@ -9,15 +9,6 @@ use Blog\Lib\Exception\DatabaseException;
 class Schema
 {
     /**
-     * @var string
-     *      The string that queries the database for all the table names
-     */
-    const SCHEMA_QUERY_TABLE_NAME = 'SELECT name
-                                     FROM sqlite_master
-                                     WHERE type="table"
-                                     AND name=:name';
-
-    /**
      * @param string $tableName
      * @return string
      */
@@ -30,12 +21,10 @@ class Schema
     }
 
     /**
-     * @var string
-     *      Gets the table information
+     * @param string $tableName
+     * @return string
      */
-    const SCHEMA_QUERY_TABLE_PRAGMA = 'PRAGMA table_info(:name)';
-
-    private function columnNameQuery($tableName)
+    private function columnNameQuery(string $tableName): string
     {
         return 'PRAGMA table_info(' . $tableName . ')';
     }
@@ -122,7 +111,7 @@ class Schema
      * @return string
      *      The query string to create the tables
      */
-    public function buildQueryString($tables): string
+    public function buildCreateString($tables): string
     {
         $buffer = '';
 
