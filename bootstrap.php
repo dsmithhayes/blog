@@ -7,6 +7,8 @@ use Slim\Views\TwigExtension;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 
+use Blog\Lib\Database\Model;
+
 /**
  * Initialize the application, break out the container.
  */
@@ -52,8 +54,23 @@ $container['markdown'] = function ($container) {
     return new Parsedown();
 };
 
+/**
+ * Primary PDO instance
+ */
 $container['pdo'] = function ($container) {
-    return new PDO($container->settings['database']['dsn']);
+    $pdo = new PDO($container->settings['database']['dsn']);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    return $pdo;
+};
+
+$container->pdo->exec('SELECT * FROM posts');
+
+/**
+ * Posts model
+ */
+$container['posts'] = function ($container) {
+    return new Model('posts', $container->pdo);
 };
 
 /**

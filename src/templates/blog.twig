@@ -2,4 +2,8 @@
 
 {% block content %}
   <h1>Blog Posts</h1>
+
+  {% if post %}
+    <p>{{ post }}</p>
+  {% endif %}
 {% endblock %}

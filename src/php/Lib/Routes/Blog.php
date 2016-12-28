@@ -19,9 +19,15 @@ class Blog
                      ->setMethod('get')
                      ->setRoute('/blog')
                      ->setCallback(function (Request $req, Response $res) {
+                         $posts = $this->posts->findAll();
+
+                         if (!$posts) {
+                             $posts = 'No posts!';
+                         }
 
                          return $this->view->render($res, 'blog.twig', [
-                             'title' => 'Blog'
+                             'title' => 'Blog',
+                             'post' => $posts
                          ]);
                      });
             }

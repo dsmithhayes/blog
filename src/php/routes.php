@@ -8,7 +8,7 @@ use Blog\Lib\{Route, Router};
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-use Blog\Lib\Routes\{Home, Contact, Blog, Post};
+use Blog\Lib\Routes\{Home, Contact, Blog};
 
 $container = $app->getContainer();
 

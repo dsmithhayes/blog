@@ -95,6 +95,17 @@ class Model
      */
     public function find(int $id)
     {
+        $sql = "SELECT * FROM {$this->tableName} WHERE id = {$id}";
+        $row = $this->pdo->query($sql)
+                         ->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return false;
+        }
+
+        foreach ($row as $name => $value) {
+            $this->columns[$name] = $value;
+        }
 
         $this->dirty = false;
         return $this;
@@ -108,16 +119,40 @@ class Model
      */
     public function findBy(string $columnName, $value)
     {
+        $sql = "SELECT * FROM {$this->tableName} WHERE {$columnName} = :value";
+        $row = $this->pdo->prepare($sql)
+                         ->execute(['value' => $value])
+                         ->fetch();
+
+        if (!$row) {
+            throw new DatabaseException("PDO error: " . PDO::errorInfo());
+        }
+
+        foreach ($row as $name => $value) {
+            $this->columns[$name] = $value;
+        }
 
         $this->dirty = false;
         return $this;
     }
 
     /**
-     *
+     * @return array
+     *      An array of Model objects fully hydrated with their row data.
      */
-    public function findManyBy(string $columnName, $value)
+    public function findAll(): array
     {
+        $sql  = "SELECT * FROM {$this->tableName}";
+        $rows = $this->pdo->query($sql)
+                          ->fetchAll(PDO::FETCH_ASSOC);
 
+        $models = [];
+
+        foreach ($rows as $row) {
+            $models[$row['id']] = clone $this;
+            $models[$row['id']]->find($row['id']);
+        }
+
+        return $models;
     }
 }

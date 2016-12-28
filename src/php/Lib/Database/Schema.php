@@ -18,10 +18,27 @@ class Schema
                                      AND name=:name';
 
     /**
+     * @param string $tableName
+     * @return string
+     */
+    private function tableNameQuery(string $tableName): string
+    {
+        return 'SELECT name
+                FROM sqlite_master
+                WHERE type="table"
+                AND name="' . $tableName . '"';
+    }
+
+    /**
      * @var string
      *      Gets the table information
      */
     const SCHEMA_QUERY_TABLE_PRAGMA = 'PRAGMA table_info(:name)';
+
+    private function columnNameQuery($tableName)
+    {
+        return 'PRAGMA table_info(' . $tableName . ')';
+    }
 
     /**
      * @var PDO
@@ -47,14 +64,10 @@ class Schema
      */
     public function tableExists(string $tableName): bool
     {
-        $statement = $this->pdo->prepare(self::SCHEMA_QUERY_TABLE_NAME)
-                               ->execute(['name' => $tableName]);
+        $statement = $this->pdo->query($this->tableNameQuery($tableName))
+                               ->fetch();
 
-        if (!$statement->fetchAll()) {
-            return false;
-        }
-
-        return true;
+        return (!$statement) ? false : true;
     }
 
     /**
@@ -67,11 +80,15 @@ class Schema
      */
     public function columnExists(string $tableName, string $columnName): bool
     {
-        $statement = $this->pdo->prepare(self::SCHEMA_QUERY_TABLE_PRAGMA)
-                               ->execute(['name' => $tableName]);
+        $rows = $this->pdo->query($this->columnNameQuery($tableName))
+                          ->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($statement->fetchAll() as $row) {
-            if ($row['name'] === $columName) {
+        if (!$rows) {
+            return false;
+        }
+
+        foreach ($rows as $row) {
+            if ($row['name'] === $columnName) {
                 return true;
             }
         }
@@ -87,16 +104,16 @@ class Schema
      */
     public function getColumnNames(string $tableName): array
     {
-        $temp = [];
+        $rows = $this->pdo->query($this->columnNameQuery($tableName))
+                          ->fetchAll();
 
-        $statement = $this->pdo->prepare(self::SCHEMA_QUERY_TABLE_PRAGMA)
-                               ->execute(['name' => $tableName]);
+        $cols = [];
 
-        foreach ($statement->fetchAll() as $row) {
-            $temp[] = $row['name'];
+        foreach ($rows as $row) {
+            $cols[] = $row['name'];
         }
 
-        return $temp;
+        return $cols;
     }
 
     /**
@@ -123,7 +140,7 @@ class Schema
                 }
             }
 
-            $buffer .= "); "
+            $buffer .= "); ";
         }
 
         return $buffer;
