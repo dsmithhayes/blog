@@ -9,10 +9,19 @@ use Blog\Lib\Exception\DatabaseException;
 class Schema
 {
     /**
-     * @var Extended\LinkedList
-     *      A LinkedList of all the tables in the application
+     * @var string
+     *      The string that queries the database for all the table names
      */
-    private $tables;
+    const SCHEMA_QUERY_TABLE_NAME = 'SELECT name
+                                     FROM sqlite_master
+                                     WHERE type="table"
+                                     AND name=:name';
+
+    /**
+     * @var string
+     *      Gets the table information
+     */
+    const SCHEMA_QUERY_TABLE_PRAGMA = 'PRAGMA table_info(:name)';
 
     /**
      * @var PDO
@@ -26,62 +35,61 @@ class Schema
      * @param PDO $pdo
      *      An active PDO instance
      */
-    public function __construct(array $tables, PDO $pdo)
-    {
-        $this->tables = new LinkedList($tables);
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
-
-        if (!$this->validSchema()) {
-            throw new DatabaseException(
-                'Invalid table schema: ' . print_r($schema)
-            );
-        }
     }
 
     /**
-     * Checks that the loaded schema matches the database
-     *
-     * @param array|null $schema
-     *      A schema to check against, uses the internal one if none given
+     * @param string $tableName
+     *      The name of the table
      * @return bool
-     *      True if the table schema is present in the database already
-     * @throws Blog\Lib\Exception\DatabaseException
-     *      If the schema is invalid
+     *      True if the table exists
      */
-    public function validSchema($schema = null): bool
+    public function tableExists(string $tableName): bool
     {
-        if (!$schema) {
-            $schema = $this->tables;
-        }
+        $statement = $this->pdo->prepare(self::SCHEMA_QUERY_TABLE_NAME)
+                               ->execute(['name' => $tableName]);
 
-        foreach ($schema as $tableName => $columns) {
-            $query = 'SELECT name
-                      FROM sqlite_master
-                      WHERE type="table"
-                      AND name=:name';
-
-            $statement = $this->pdo->prepare($query)
-                                   ->execute(['name' => $tableName]);
-
-            if (!$statement->fetchAll()) {
-                return false;
-            }
+        if (!$statement->fetchAll()) {
+            return false;
         }
 
         return true;
     }
 
     /**
-     * Builds all of the tables
+     * @param string $tableName
+     *      The name of the table to check
+     * @param string $columnName
+     *      The name of the column to check
+     * @return bool
+     *      True if the column exists in the table
+     */
+    public function columnExists(string $tableName, string $columnName): bool
+    {
+        $statement = $this->pdo->prepare(self::SCHEMA_QUERY_TABLE_PRAGMA)
+                               ->execute(['name' => $tableName]);
+
+        foreach ($statement->fetchAll() as $row) {
+            if ($row['name'] === $columName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Builds all of the tables. The table schema is a basic array which
      *
      * @return string
      *      The query string to create the tables
      */
-    public function buildQueryString(): string
+    public function buildQueryString($tables): string
     {
         $buffer = '';
 
-        foreach ($this->tables as $tableName => $columns) {
+        foreach ($tables as $tableName => $columns) {
             $buffer .= "CREATE TABLE {$tableName} (";
 
             $i = 0;
@@ -99,14 +107,5 @@ class Schema
         }
 
         return $buffer;
-    }
-
-    /**
-     * @return Extended\LinkedList
-     *      The current table schema
-     */
-    public function getTableSchema(): LinkedList
-    {
-        return $this->tables;
     }
 }

@@ -4,16 +4,18 @@ return [
     'dsn' => 'sqlite:' . __DIR__ . '/../data/blog.sq3',
     'tables' => [
         'posts' => [
-            'title'          => 'text',
-            'slug'           => 'text',
-            'body'           => 'text',
-            'date_published' => 'integer',
-            'published'      => 'integer'
+            'id'        => 'integer not null primary key'
+            'title'     => 'text not null',
+            'slug'      => 'text not null',
+            'body'      => 'text not null',
+            'created'   => 'integer not null',
+            'published' => 'integer null default null'
         ],
         'users' => [
-            'username' => 'text',
-            'email'    => 'text',
-            'password' => 'text'
+            'id'       => 'integer not null primary key'
+            'username' => 'text not null',
+            'email'    => 'text not null',
+            'password' => 'text not null'
         ]
     ]
 ];
