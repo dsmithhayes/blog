@@ -5,10 +5,18 @@
  * the container if the application is being run from the command line.
  */
 
-$editor = exec('wich vim');
-$user   = exec('whoami');
+if (php_sapi_name() === 'cli') {
+    return [];
+}
+
+$editor_name = 'vim';
+$editor_path = exec("wich {$editor_name}");
+$user        = exec('whoami');
 
 return [
-    'editor' => $editor,
+    'editor' => [
+        'name' => $editor_name,
+        'path' => $editor_path,
+    ],
     'user'   => $user,
 ];
