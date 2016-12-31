@@ -7,6 +7,7 @@ return [
             'id'        => 'integer not null primary key',
             'title'     => 'text not null',
             'slug'      => 'text not null',
+            'filename'  => 'text not null',
             'body'      => 'text not null',
             'created'   => 'integer not null',
             'published' => 'integer null default null'

@@ -10,3 +10,6 @@ public/images
 .buildpath
 .project
 .settings
+data/*
+posts/*
+

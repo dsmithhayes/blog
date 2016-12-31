@@ -20,7 +20,7 @@ $schema = new Schema($container->pdo);
  */
 foreach ($container->settings['database']['tables'] as $tableName => $columns) {
     if (!$schema->tableExists($tableName)) {
-        if (!$schema->buildTables([$tableName => $columns])) {
+        if ($schema->buildTables([$tableName => $columns]) === false) {
             die("Error building table: {$tableName}");
         }
     }

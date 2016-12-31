@@ -13,10 +13,10 @@ class Schema
      */
     private function tableNameQuery(string $tableName): string
     {
-        return 'SELECT  name
+        return "SELECT  name
                 FROM    sqlite_master
-                WHERE   type="table"
-                AND     name="' . $tableName . '"';
+                WHERE   type='table'
+                AND     name='{$tableName}'";
     }
 
     /**
@@ -55,7 +55,7 @@ class Schema
         $statement = $this->pdo->query($this->tableNameQuery($tableName))
                                ->fetch();
 
-        return (!$statement) ? false : true;
+        return ($statement) ?? false;
     }
 
     /**
