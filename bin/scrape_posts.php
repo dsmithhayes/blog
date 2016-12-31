@@ -15,7 +15,7 @@ if (!($files = scandir($posts_dir))) {
 $file_count = 0;
 
 foreach ($files as $file) {
-    if ($file === '.' || $file === '..') {
+    if (is_dir($file)) {
         continue;
     }
 
@@ -25,7 +25,7 @@ foreach ($files as $file) {
         $post = $container->posts->findBy('filename', $file);
 
         if (!$post) {
-            die('No post found.');
+            die("Build the post.\n");
         }
     } catch (DatabaseException $de) {
         die("{$de->getMessage()}\n");

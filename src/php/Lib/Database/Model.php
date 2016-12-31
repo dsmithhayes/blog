@@ -117,7 +117,7 @@ class Model
         if (is_string($value)) {
             $value = "\"{$value}\"";
         }
-        
+
         $sql = "SELECT * FROM {$this->tableName} WHERE {$columnName} = {$value}";
 
         try {
@@ -131,7 +131,8 @@ class Model
                 $this->columns[$name] = $value;
             }
         } catch (PDOException $pe) {
-            $message = $pe->getMessage() . "\n\n{$sql}\n";
+            $message = "PDO Error: " . $pe->getMessage();
+            $message .= "\nQuery: {$sql}\n";
             throw new DatabaseException($message);
         }
 
