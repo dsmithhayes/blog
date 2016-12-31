@@ -26,4 +26,7 @@ foreach ($container->settings['database']['tables'] as $tableName => $columns) {
     }
 }
 
+/**
+ * No news is good news.
+ */
 return 0;
