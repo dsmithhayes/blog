@@ -55,7 +55,7 @@ class Schema
         $statement = $this->pdo->query($this->tableNameQuery($tableName))
                                ->fetch();
 
-        return ($statement) ?? false;
+        return (bool) ($statement) ?? false;
     }
 
     /**

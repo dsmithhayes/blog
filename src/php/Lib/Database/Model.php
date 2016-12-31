@@ -3,6 +3,7 @@
 namespace Blog\Lib\Database;
 
 use PDO;
+use PDOException;
 use Blog\Lib\Database\Schema;
 use Blog\Lib\Exception\DatabaseException;
 
@@ -113,18 +114,25 @@ class Model
      */
     public function findBy(string $columnName, $value)
     {
-        $sql = "SELECT *
-                FROM {$this->tableName}
-                WHERE {$columnName} = {$value}";
-
-        $row = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-
-        if (!$row) {
-            return false;
+        if (is_string($value)) {
+            $value = "\"{$value}\"";
         }
+        
+        $sql = "SELECT * FROM {$this->tableName} WHERE {$columnName} = {$value}";
 
-        foreach ($row as $name => $value) {
-            $this->columns[$name] = $value;
+        try {
+            $row = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+            if (!$row) {
+                return false;
+            }
+
+            foreach ($row as $name => $value) {
+                $this->columns[$name] = $value;
+            }
+        } catch (PDOException $pe) {
+            $message = $pe->getMessage() . "\n\n{$sql}\n";
+            throw new DatabaseException($message);
         }
 
         $this->dirty = false;
