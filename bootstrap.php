@@ -64,8 +64,6 @@ $container['pdo'] = function ($container) {
     return $pdo;
 };
 
-$container->pdo->exec('SELECT * FROM posts');
-
 /**
  * Posts model
  */
@@ -78,7 +76,6 @@ $container['posts'] = function ($container) {
  */
 $router = require_once $container->settings['routes']['path'];
 $router->hydrate($app);
-
 
 /**
  * Send the application to the response.

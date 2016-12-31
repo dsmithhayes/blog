@@ -2,7 +2,6 @@
 
 namespace Blog\Lib\Database;
 
-use Extended\LinkedList;
 use PDO;
 use Blog\Lib\Exception\DatabaseException;
 
@@ -14,10 +13,10 @@ class Schema
      */
     private function tableNameQuery(string $tableName): string
     {
-        return 'SELECT name
-                FROM sqlite_master
-                WHERE type="table"
-                AND name="' . $tableName . '"';
+        return 'SELECT  name
+                FROM    sqlite_master
+                WHERE   type="table"
+                AND     name="' . $tableName . '"';
     }
 
     /**
@@ -26,7 +25,7 @@ class Schema
      */
     private function columnNameQuery(string $tableName): string
     {
-        return 'PRAGMA table_info(' . $tableName . ')';
+        return "PRAGMA table_info({$tableName})";
     }
 
     /**
@@ -94,7 +93,7 @@ class Schema
     public function getColumnNames(string $tableName): array
     {
         $rows = $this->pdo->query($this->columnNameQuery($tableName))
-                          ->fetchAll();
+                          ->fetchAll(PDO::FETCH_ASSOC);
 
         $cols = [];
 
@@ -106,12 +105,21 @@ class Schema
     }
 
     /**
-     * Builds all of the tables. The table schema is a basic array which
+     * Builds all of the tables. The table schema is a basic array which looks
+     * like the following:
      *
+     *      [
+     *          'tableName' => [
+     *              'columnName' => 'columnType',
+     *          ],
+     *      ];
+     *
+     * @param array $tables
+     *      Multiple table definitions
      * @return string
      *      The query string to create the tables
      */
-    public function buildCreateString($tables): string
+    public function buildCreateString(array $tables): string
     {
         $buffer = '';
 
@@ -124,7 +132,7 @@ class Schema
             foreach ($columns as $name => $type) {
                 $buffer .= "{$name} {$type}";
 
-                if ($i++ < $count) {
+                if (++$i < $count) {
                     $buffer .= ", ";
                 }
             }
@@ -133,5 +141,16 @@ class Schema
         }
 
         return $buffer;
+    }
+
+    /**
+     * @param array $tables
+     *      Array of table definitions
+     * @return bool
+     *      True if the creation is successful
+     */
+    public function buildTables(array $tables): int
+    {
+        return $this->pdo->exec($this->buildCreateString($tables));
     }
 }

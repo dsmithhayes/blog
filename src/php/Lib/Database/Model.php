@@ -91,8 +91,7 @@ class Model
     public function find(int $id)
     {
         $sql = "SELECT * FROM {$this->tableName} WHERE id = {$id}";
-        $row = $this->pdo->query($sql)
-                         ->fetch(PDO::FETCH_ASSOC);
+        $row = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
             return false;
@@ -118,8 +117,11 @@ class Model
                 FROM {$this->tableName}
                 WHERE {$columnName} = {$value}";
 
-        $row = $this->pdo->query($sql)
-                         ->fetch();
+        $row = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return false;
+        }
 
         foreach ($row as $name => $value) {
             $this->columns[$name] = $value;
@@ -130,16 +132,18 @@ class Model
     }
 
     /**
+     * When there are no entries in the database, the method will return
+     * an empty array.
+     *
      * @return array
      *      An array of Model objects fully hydrated with their row data.
      */
     public function findAll(): array
     {
-        $sql  = "SELECT *
-                 FROM {$this->tableName}";
-        
-        $rows = $this->pdo->query($sql)
-                          ->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT *
+                FROM {$this->tableName}";
+
+        $rows = $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
         $models = [];
 
@@ -156,7 +160,17 @@ class Model
      */
     public function save()
     {
+        // Insert if the model is dirty
+        if ($this->dirty) {
 
+            // if the ID is present, it already exists and update the record
+            if ($this->columns['id']) {
+
+            // If the ID is not present, insert a new record
+            } else {
+
+            }
+        }
     }
 
     /**
@@ -167,7 +181,7 @@ class Model
      */
     public function set(string $key, $value)
     {
-        if (!in_array($key, $this->columns)) {
+        if (!array_key_exists($key, $this->columns)) {
             throw new DatabaseException('Unknown colum name: ' . $key);
         }
 
