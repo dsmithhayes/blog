@@ -2,6 +2,9 @@
 
 namespace Blog\Lib\Email;
 
+use Extended\Process\Fork;
+use Extended\Process\Runnable;
+use Extended\Exception\ProcessException;
 use Blog\Lib\Email\Headers;
 
 class Handler
@@ -99,9 +102,39 @@ class Handler
      */
     public function send(): bool
     {
-        return mail('me@davesmithhayes.com',
-                    $this->getSubject(),
-                    $this->getMessage(),
-                    (string) $this->headers);
+        try {
+            $mailProcess = new class ($this->subject,
+                                      $this->message,
+                                      $this->headers) extends Runnable
+            {
+                protected $subject;
+                protected $message;
+                protected $headers;
+
+                public function __construct(string $subject,
+                                            string $message,
+                                            Headers $headers)
+                {
+                    $this->subject = $subject;
+                    $this->message = $message;
+                    $this->heades = $headers;
+                }
+
+                public function run()
+                {
+                    return mail('me@davesmithhayes.com',
+                                $this->subject,
+                                $this->message,
+                                (string) $this->headers);
+                }
+            };
+
+            $fork = (new Fork())->fork($mailProcess);
+
+        } catch (ProcessException $pe) {
+            return false;
+        }
+
+        return true;
     }
 }
