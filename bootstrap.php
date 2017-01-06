@@ -6,7 +6,7 @@ use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
-
+use PHPMailer;
 use Blog\Lib\Database\Model;
 
 /**
@@ -69,6 +69,24 @@ $container['pdo'] = function ($container) {
  */
 $container['posts'] = function ($container) {
     return new Model('posts', $container->pdo);
+};
+
+/**
+ * The PHPMailer object
+ */
+$container['mailer'] = function ($container) {
+    $mailer = new PHPMailer();
+
+    $mailer->isSMTP();
+
+    $mailer->Host     = $container->settings['email']['smtp']['host'];
+    $mailer->SMTPAuth = true;
+    $mailer->Secure   = 'tls';
+    $mailer->Username = $container->settings['email']['smtp']['username'];
+    $mailer->Password = $container->settings['email']['smtp']['password'];
+    $mailer->Port     = $container->settings['email']['smtp']['post'];
+
+    return $mailer;
 };
 
 /**

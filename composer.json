@@ -6,9 +6,10 @@
         "slim/flash": "^0.2.0",
         "ext-session": "^7.0",
         "slim/twig-view": "^2.1",
-        "dsmithhayes/extended": "^0.5.0",
+        "dsmithhayes/extended": "dev-master",
         "erusev/parsedown": "^1.6",
-        "cakephp/orm": "^3.3"
+        "cakephp/orm": "^3.3",
+        "phpmailer/phpmailer": "^5.2"
     },
     "license": "BSD 3.0",
     "authors": [

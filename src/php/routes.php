@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 use Blog\Lib\Routes\{Home, Contact, Blog};
 
+// implictly grab the $app from the bootstrapping file
 $container = $app->getContainer();
 
 return new Router([

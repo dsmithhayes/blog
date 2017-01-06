@@ -21,14 +21,16 @@ class Contact
         return new class() extends Route {
             public function __construct()
             {
+                $callback = function (Request $req, Response $res) {
+                    return $this->view->render($res, 'contact.twig', [
+                        'title' => 'Contact'
+                    ]);
+                };
+
                 $this->setName('load-contact')
                      ->setMethod('get')
                      ->setRoute('/contact')
-                     ->setCallback(function (Request $req, Response $res) {
-                         return $this->view->render($res, 'contact.twig', [
-                             'title' => 'Contact'
-                         ]);
-                     });
+                     ->setCallback($callback);
             }
         };
     }
@@ -41,29 +43,31 @@ class Contact
         return new class() extends Route {
             public function __construct()
             {
+                $callback = function (Request $req, Response $res) {
+                    // handle the form here
+                    $name = $req->getParam('name');
+                    $email = $req->getParam('email');
+                    $subject = "Hello from {$name}!";
+                    $message = $req->getParam('message');
+
+                    $headers = new Headers();
+                    $headers->addHeader('From', "{$name} <{$email}>");
+
+                    $handler = new Handler($subject, $message, $headers);
+
+                    if (!$handler->send()) {
+                        return $res->withStatus(500);
+                    }
+
+                    return $this->view->render($res, 'contact.twig', [
+                        'title' => 'Contact'
+                    ]);
+                };
+
                 $this->setName('handle-contact')
                      ->setMethod('post')
                      ->setRoute('/contact')
-                     ->setCallback(function (Request $req, Response $res) {
-                         // handle the form here
-                         $name = $req->getParam('name');
-                         $email = $req->getParam('email');
-                         $subject = "Hello from {$name}!";
-                         $message = $req->getParam('message');
-
-                         $headers = new Headers();
-                         $headers->addHeader('From', "{$name} <{$email}>");
-
-                         $handler = new Handler($subject, $message, $headers);
-
-                         if (!$handler->send()) {
-                             return $res->withStatus(500);
-                         }
-
-                         return $this->view->render($res, 'contact.twig', [
-                             'title' => 'Contact'
-                         ]);
-                     });
+                     ->setCallback($callback);
             }
         };
     }

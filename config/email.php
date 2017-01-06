@@ -1,5 +1,11 @@
 <?php
 
 return [
-    'to' => 'me@davesmithhayes.com'
+    'smtp' => [
+        'host' => '',
+        'port' => 587,
+        'username' => 'noreply@davesmithhayes.com',
+        'password' => 'password',
+        'from' => 'noreply@davesmithhayes.com'
+    ]
 ];

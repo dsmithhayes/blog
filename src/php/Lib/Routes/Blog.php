@@ -21,10 +21,6 @@ class Blog
                      ->setCallback(function (Request $req, Response $res) {
                          $posts = $this->posts->findAll();
 
-                         if (!$posts) {
-                             $posts = 'No posts!';
-                         }
-
                          return $this->view->render($res, 'blog.twig', [
                              'title' => 'Blog',
                              'post' => $posts
@@ -43,7 +39,6 @@ class Blog
                      ->setMethod('get')
                      ->setRoute('/blog/{slug}')
                      ->setCallback(function (Request $req, Response $res) {
-
                          return $this->view->render($res, 'blog-post.twig', [
                              'title' => 'Blog Post'
                          ]);

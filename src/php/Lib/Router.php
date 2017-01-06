@@ -17,7 +17,7 @@ class Router
     private $routes = [];
 
     /**
-     * @param array $routes
+     * @param \Blog\Lib\Route[] $routes
      *      An array of Route objects
      */
     public function __construct(array $routes)

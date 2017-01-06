@@ -6,7 +6,7 @@
  */
 
 if (php_sapi_name() === 'cli') {
-    return [];
+    return [ 'is_cli' => false ];
 }
 
 $editor_name = 'vim';
@@ -14,9 +14,10 @@ $editor_path = exec("which {$editor_name}");
 $user_name   = exec('whoami');
 
 return [
+    'is_cli' => true,
     'editor' => [
         'name' => $editor_name,
         'path' => $editor_path,
     ],
-    'user' => $user,
+    'user' => $user_name,
 ];

@@ -83,6 +83,10 @@ abstract class Route
         return $this;
     }
 
+    /**
+     * @param \Interop\Container\ContainerInterface $container
+     *      The application container
+     */
     public function setContainer(Container $container)
     {
         $this->container = $container;
